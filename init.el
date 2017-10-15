@@ -68,6 +68,9 @@ This function should only modify configuration layer settings."
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
 
+     (mu4e :variables
+            mu4e-installation-path "/usr/share/emacs/site-lisp")
+
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -425,6 +428,63 @@ before packages are loaded."
 
   ;; hungry delete
   (global-hungry-delete-mode t)
+
+  ;;; mu4e layer -- email
+  ;; mail directory name
+  (setq mu4e-maildir "~/mails"
+        mu4e-drafts-folder "/Drafts"
+        mu4e-sent-folder   "/Sent Messages"
+        mu4e-refile-folder "/Archive"
+        mu4e-trash-folder "/Deleted Messages")
+
+  ;; mail directory shortcuts
+  (setq mu4e-maildir-shortcuts
+        '(("/INBOX" . ?i)
+          ("/Sent Messages" . ?s)
+          ("/Junk" . ?j)
+          ("/Deleted Messages" . ?d)))
+
+  ;; configure mu4e view
+  (setq mu4e-view-show-images t
+        mu4e-view-show-addresses t)
+  ;; use imagemagick, if available
+  (when (fboundp 'imagemagick-register-types)
+    (imagemagick-register-types))
+
+  ;; save attachment to my desktop (this can also be a function)
+  (setq mu4e-attachment-dir "~/Downloads")
+
+  ;; get mails, forbid auto update
+  (setq  mu4e-get-mail-command "offlineimap"
+         mu4e-update-interval nil)
+
+  ;; something about ourselves
+  (setq user-mail-address "yangyang1@souche.com"
+        user-full-name  "杨洋")
+        ;; mu4e-compose-signature
+        ;; (concat
+        ;;  "杨洋\n"
+        ;;  "Email: yangyang1@souche.com\n"
+        ;;  "Blog: http://www.jianshu.com/u/71a9f866a9f5 \n"
+        ;;  "\n")
+        ;; mu4e-compose-signature-auto-include t
+        ;; )
+
+  ;; send mail
+  ;; (require 'smtpmail)
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.exmail.qq.com"
+        smtpmail-smtp-server "smtp.exmail.qq.com"
+        smtpmail-smtp-service 587)
+
+  ;; sync email from imap server
+  ;; (setq mu4e-get-mail-command "offlineimap"
+  ;;       mu4e-update-interval 300)
+  ;; notifcation
+  ;; (setq mu4e-enable-notifications t)
+  ;; (mu4e-alert-enable-mode-line-display)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -439,10 +499,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(gud-gdb-command-name "gdb --annotate=1")
+ '(large-file-warning-threshold nil)
  '(markdown-command "/usr/local/bin/pandoc")
  '(package-selected-packages
    (quote
-    (fcitx smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor markdown-mode engine-mode vue-mode edit-indirect ssass-mode vue-html-mode org-category-capture org-plus-contrib vmd-mode web-beautify livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-gtags ggtags company-tern dash-functional tern coffee-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode flycheck emmet-mode company-web web-completion-data add-node-modules-path youdao-dictionary ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org symon string-inflection spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-projectile org-present org-pomodoro org-download org-bullets org-brain open-junk-file neotree mwim move-text mmm-mode markdown-toc macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag golden-ratio gnuplot gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump define-word company-statistics column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (mu4e-maildirs-extension mu4e-alert ht fcitx smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor markdown-mode engine-mode vue-mode edit-indirect ssass-mode vue-html-mode org-category-capture org-plus-contrib vmd-mode web-beautify livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-gtags ggtags company-tern dash-functional tern coffee-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode flycheck emmet-mode company-web web-completion-data add-node-modules-path youdao-dictionary ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org symon string-inflection spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-projectile org-present org-pomodoro org-download org-bullets org-brain open-junk-file neotree mwim move-text mmm-mode markdown-toc macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag golden-ratio gnuplot gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump define-word company-statistics column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
