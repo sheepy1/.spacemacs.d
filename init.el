@@ -29,7 +29,8 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
+   '(
+     javascript
      html
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -86,7 +87,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(google-translate)
+   dotspacemacs-excluded-packages '(google-translate evil-lisp-state spray doc-view lorem-ipsum)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
@@ -374,7 +375,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; remove warning
   (setq exec-path-from-shell-arguments '("-l"))
-
   )
 
 (defun dotspacemacs/user-config ()
@@ -383,7 +383,6 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-
   ;; bugfix for align problem in table with chinese
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
@@ -413,6 +412,9 @@ before packages are loaded."
   ;; search engine(google)
   (define-key evil-normal-state-map (kbd "SPC a g") 'engine/search-google)
 
+  ;; use "o" as "RET"
+  (define-key neotree-mode-map (kbd "o") 'neotree-enter)
+
   ;; config major mode
   (setq auto-mode-alist
         (append
@@ -422,6 +424,7 @@ before packages are loaded."
   ;; config org mode
   (setq org-agenda-files '("~/orgs/work" "~/orgs/study" "~/orgs/life"))
   (setq org-todo-keywords '((sequence "TODO" "DOING" "|" "DONE" "ABORT")))
+  (setq org-image-actual-width '(800))
 
   ;; config markdown layer
   (custom-set-variables '(markdown-command "/usr/local/bin/pandoc"))
@@ -487,6 +490,10 @@ before packages are loaded."
 
   )
 
+;; Move custom settings to 'custom.el'
+(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+(load custom-file 'no-error 'no-message)
+
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 (defun dotspacemacs/emacs-custom-settings ()
@@ -494,21 +501,21 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
+;; (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(gud-gdb-command-name "gdb --annotate=1")
- '(large-file-warning-threshold nil)
- '(markdown-command "/usr/local/bin/pandoc")
- '(package-selected-packages
-   (quote
-    (mu4e-maildirs-extension mu4e-alert ht fcitx smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor markdown-mode engine-mode vue-mode edit-indirect ssass-mode vue-html-mode org-category-capture org-plus-contrib vmd-mode web-beautify livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-gtags ggtags company-tern dash-functional tern coffee-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode flycheck emmet-mode company-web web-completion-data add-node-modules-path youdao-dictionary ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org symon string-inflection spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-projectile org-present org-pomodoro org-download org-bullets org-brain open-junk-file neotree mwim move-text mmm-mode markdown-toc macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag golden-ratio gnuplot gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump define-word company-statistics column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
-(custom-set-faces
+;;  '(gud-gdb-command-name "gdb --annotate=1")
+;;  '(large-file-warning-threshold nil)
+;;  '(markdown-command "/usr/local/bin/pandoc")
+;;  '(package-selected-packages
+;;    (quote
+;;     (reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl mu4e-maildirs-extension mu4e-alert ht fcitx smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link evil-magit magit magit-popup git-commit with-editor markdown-mode engine-mode vue-mode edit-indirect ssass-mode vue-html-mode org-category-capture org-plus-contrib vmd-mode web-beautify livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc helm-gtags ggtags company-tern dash-functional tern coffee-mode web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode flycheck emmet-mode company-web web-completion-data add-node-modules-path youdao-dictionary ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package unfill toc-org symon string-inflection spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el password-generator paradox org-projectile org-present org-pomodoro org-download org-bullets org-brain open-junk-file neotree mwim move-text mmm-mode markdown-toc macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag golden-ratio gnuplot gh-md fuzzy flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump define-word company-statistics column-enforce-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+;; (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ ;; )
 )
