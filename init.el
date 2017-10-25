@@ -29,7 +29,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(
+   '(ruby
      javascript
      html
      ;; ----------------------------------------------------------------
@@ -87,7 +87,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(google-translate evil-lisp-state spray doc-view lorem-ipsum)
+   dotspacemacs-excluded-packages '(google-translate evil-lisp-state spray doc-view lorem-ipsum octave)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
@@ -383,6 +383,7 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
   ;; bugfix for align problem in table with chinese
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
@@ -398,6 +399,7 @@ before packages are loaded."
   ;; (define-key evil-normal-state-map (kbd "SPC q") 'delete-window)
   ;; (define-key evil-normal-state-map (kbd "SPC x") 'evil-save-and-quit)
   (define-key evil-normal-state-map (kbd "SPC RET") (kbd "SPC s c"))
+  (define-key evil-normal-state-map (kbd "SPC o") 'helm-projectile-find-file)
 
   (define-key evil-insert-state-map (kbd "C-k") nil)
   (define-key evil-insert-state-map (kbd "C-a") nil)
@@ -412,13 +414,18 @@ before packages are loaded."
   ;; search engine(google)
   (define-key evil-normal-state-map (kbd "SPC a g") 'engine/search-google)
 
+  (add-hook 'neotree-mode-hook 'nerdtree-mode)
   ;; use "o" as "RET"
-  (define-key neotree-mode-map (kbd "o") 'neotree-enter)
+  (defun nerdtree-mode ()
+    (define-key neotree-mode-map (kbd "o") 'neotree-enter)
+    )
 
   ;; config major mode
   (setq auto-mode-alist
         (append
          '(("\\.vue\\'" . web-mode))
+         '(("\\.m\\'" . objc-mode))
+         '(("\\.h\\'" . objc-mode))
          auto-mode-alist))
 
   ;; config org mode
